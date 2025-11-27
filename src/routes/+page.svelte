@@ -22,6 +22,10 @@ async function handleGetReading() {
 	await game.getReading();
 }
 
+async function handleGetDeepReading() {
+	await game.getDeepReading();
+}
+
 function isCardSelected(cardId) {
 	return game.selectedCards.some((c) => c.id === cardId);
 }
@@ -286,7 +290,7 @@ function isCardSelected(cardId) {
                             Your Reading
                         </p>
                         <div
-                            class="border border-gothic-silver/20 p-6 md:p-8 mb-8"
+                            class="border border-gothic-silver/20 p-6 md:p-8 mb-6"
                         >
                             <p
                                 class="whitespace-pre-wrap leading-relaxed text-sm md:text-base font-light text-white/90"
@@ -294,6 +298,19 @@ function isCardSelected(cardId) {
                                 {game.reading}
                             </p>
                         </div>
+                        <!-- <div class="mb-6 text-center">
+                            <button
+                                onclick={handleGetDeepReading}
+                                class="inline-flex items-center gap-2 text-sm font-light text-gothic-crimson
+                             hover:text-white transition-colors group"
+                            >
+                                <span>Explore Deep Oracle Reading</span>
+                                <span
+                                    class="group-hover:translate-x-1 transition-transform"
+                                    >→</span
+                                >
+                            </button>
+                        </div> -->
                         <button
                             onclick={() => game.reset()}
                             class="w-full bg-transparent border border-gothic-silver/30 text-white
