@@ -1,5 +1,7 @@
 import { cards } from './cards.js';
-import { OPENAI_API_KEY } from './config.js';
+
+// Get API key from environment variable
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 export class TarotGame {
   question = $state('');
