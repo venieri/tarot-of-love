@@ -172,7 +172,7 @@ describe("Tarot Reading Flow", () => {
 		await fireEvent.click(readingButton);
 
 		await waitFor(() => {
-			expect(screen.getByText(/The Oracle contemplates/i)).toBeInTheDocument();
+			expect(screen.getByText(/Lydia contemplates/i)).toBeInTheDocument();
 		});
 
 		await waitFor(

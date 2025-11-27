@@ -30,7 +30,7 @@ function isCardSelected(cardId) {
   <div class="container mx-auto px-4 py-6 md:py-12 max-w-4xl">
     <header class="text-center mb-8 md:mb-16">
       <h1 class="text-3xl md:text-5xl font-light mb-2 tracking-wide text-white">Lydia Venieri's<br class="md:hidden" /> Tarot of Love</h1>
-      <p class="text-sm md:text-base font-light text-white/60">Ask the Oracle</p>
+      <p class="text-sm md:text-base font-light text-white/60">Ask Lydia</p>
     </header>
 
     {#if game.gameStage === 'question'}
@@ -175,7 +175,7 @@ function isCardSelected(cardId) {
 
         {#if game.isLoadingReading}
           <div class="text-center border-t border-gothic-silver/20 pt-8 md:pt-12">
-            <p class="text-sm md:text-base font-light text-white/60 animate-pulse">The Oracle contemplates...</p>
+            <p class="text-sm md:text-base font-light text-white/60 animate-pulse">Lydia contemplates...</p>
           </div>
         {/if}
 
