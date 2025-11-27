@@ -10,4 +10,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # API Keys - IMPORTANT: Never commit!
-src/lib/config.js
+#src/lib/config.js
