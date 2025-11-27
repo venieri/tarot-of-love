@@ -1,6 +1,7 @@
 <script>
   import { game } from '$lib/store.svelte.js';
   import { spreadPositions } from '$lib/cards.js';
+  import CardImage from '$lib/components/CardImage.svelte';
 
   function handleQuestionSubmit() {
     if (game.question.trim()) {
@@ -119,10 +120,10 @@
               {#each game.selectedCards as selected}
                 <div class="text-center">
                   <div class="mb-2">
-                    <img
+                    <CardImage
                       src={selected.image}
                       alt={selected.name}
-                      class="w-full border border-gothic-silver/20"
+                      className="w-full border border-gothic-silver/20"
                     />
                   </div>
                   <p class="text-xs text-gothic-crimson font-light mb-1">{selected.position}</p>
@@ -145,10 +146,10 @@
           <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12">
             {#each game.selectedCards as selected}
               <div class="border border-gothic-silver/10 p-3 md:p-4">
-                <img
+                <CardImage
                   src={selected.image}
                   alt={selected.name}
-                  class="w-full mb-3 border border-gothic-silver/20"
+                  className="w-full mb-3 border border-gothic-silver/20"
                 />
                 <p class="text-xs text-gothic-crimson text-center mb-1 font-light">{selected.position}</p>
                 <p class="text-xs text-center mb-2 font-light text-white">{selected.name}</p>
