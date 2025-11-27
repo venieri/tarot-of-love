@@ -1,29 +1,30 @@
 <script>
-    import { spreadPositions } from "$lib/cards.js";
-    import CardImage from "$lib/components/CardImage.svelte";
-    import { game } from "$lib/store.svelte.js";
+import { spreadPositions } from "$lib/cards.js";
+import CardImage from "$lib/components/CardImage.svelte";
+import ReadingHistory from "$lib/components/ReadingHistory.svelte";
+import { game } from "$lib/store.svelte.js";
 
-    function handleQuestionSubmit() {
-        if (game.question.trim()) {
-            game.shuffleDeck();
-            setTimeout(() => {
-                game.startSelection();
-            }, 2000);
-        }
-    }
+function handleQuestionSubmit() {
+	if (game.question.trim()) {
+		game.shuffleDeck();
+		setTimeout(() => {
+			game.startSelection();
+		}, 2000);
+	}
+}
 
-    function handleCardSelect(card) {
-        const position = spreadPositions[game.selectedCards.length];
-        game.selectCard(card, position.name);
-    }
+function handleCardSelect(card) {
+	const position = spreadPositions[game.selectedCards.length];
+	game.selectCard(card, position.name);
+}
 
-    async function handleGetReading() {
-        await game.getReading();
-    }
+async function handleGetReading() {
+	await game.getReading();
+}
 
-    function isCardSelected(cardId) {
-        return game.selectedCards.some((c) => c.id === cardId);
-    }
+function isCardSelected(cardId) {
+	return game.selectedCards.some((c) => c.id === cardId);
+}
 </script>
 
 <div class="min-h-screen bg-black text-gothic-silver">
@@ -225,6 +226,33 @@
                     <div
                         class="max-w-xl mx-auto border-t border-gothic-silver/20 pt-8 md:pt-12"
                     >
+                        <div class="mb-6 space-y-4">
+                            <div class="flex items-start gap-3">
+                                <input
+                                    type="checkbox"
+                                    id="sendEmail"
+                                    bind:checked={game.sendEmail}
+                                    class="mt-1 w-4 h-4 bg-transparent border border-gothic-silver/30
+                                   focus:ring-gothic-crimson focus:ring-1"
+                                />
+                                <label
+                                    for="sendEmail"
+                                    class="text-sm font-light text-white/70 cursor-pointer"
+                                >
+                                    Send reading to my email (optional)
+                                </label>
+                            </div>
+                            {#if game.sendEmail}
+                                <input
+                                    type="email"
+                                    bind:value={game.email}
+                                    placeholder="your@email.com"
+                                    class="w-full px-4 py-2 bg-transparent border border-gothic-silver/30
+                                   focus:outline-none focus:border-gothic-crimson text-white
+                                   placeholder-white/30 font-light text-sm"
+                                />
+                            {/if}
+                        </div>
                         <button
                             onclick={handleGetReading}
                             class="w-full bg-transparent border border-gothic-crimson text-gothic-crimson
@@ -278,5 +306,7 @@
                 {/if}
             </div>
         {/if}
+
+        <ReadingHistory />
     </div>
 </div>
