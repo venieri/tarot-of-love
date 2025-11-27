@@ -2,6 +2,9 @@ import FormData from "form-data";
 import Mailgun from "mailgun.js";
 import { json } from "@sveltejs/kit";
 
+// Disable prerendering for this API endpoint
+export const prerender = false;
+
 const MAILGUN_API_KEY = import.meta.env.VITE_MAILGUN_API_KEY;
 const MAILGUN_DOMAIN = "sandboxe624bd57c16849db930a11823b84f301.mailgun.org";
 
