@@ -7,7 +7,11 @@
       "Bash(npx tailwindcss init -p)",
       "Bash(curl:*)",
       "WebFetch(domain:svelte.dev)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
