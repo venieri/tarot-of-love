@@ -13,7 +13,10 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:integration": "vitest run src/tests/openai-integration.test.js",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "lint": "biome check src/",
+    "lint:fix": "biome check src/ --write",
+    "format": "biome format src/ --write"
   },
   "license": "MIT",
   "dependencies": {
@@ -21,6 +24,7 @@
     "@tauri-apps/plugin-opener": "^2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
     "@sveltejs/adapter-static": "^3.0.6",
     "@sveltejs/enhanced-img": "^0.9.2",
     "@sveltejs/kit": "^2.9.0",

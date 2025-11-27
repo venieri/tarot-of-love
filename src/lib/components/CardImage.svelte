@@ -1,8 +1,8 @@
 <script>
-  let { src, alt, className = '' } = $props();
+const { src, alt, className = "" } = $props();
 
-  // Convert /images/card-name.png to base path for WebP/AVIF
-  const basePath = src.replace('.png', '');
+// Convert /images/card-name.png to base path for WebP/AVIF
+const basePath = src.replace(".png", "");
 </script>
 
 <picture>

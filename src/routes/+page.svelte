@@ -1,29 +1,29 @@
 <script>
-  import { game } from '$lib/store.svelte.js';
-  import { spreadPositions } from '$lib/cards.js';
-  import CardImage from '$lib/components/CardImage.svelte';
+import { spreadPositions } from "$lib/cards.js";
+import CardImage from "$lib/components/CardImage.svelte";
+import { game } from "$lib/store.svelte.js";
 
-  function handleQuestionSubmit() {
-    if (game.question.trim()) {
-      game.shuffleDeck();
-      setTimeout(() => {
-        game.startSelection();
-      }, 2000);
-    }
-  }
+function handleQuestionSubmit() {
+	if (game.question.trim()) {
+		game.shuffleDeck();
+		setTimeout(() => {
+			game.startSelection();
+		}, 2000);
+	}
+}
 
-  function handleCardSelect(card) {
-    const position = spreadPositions[game.selectedCards.length];
-    game.selectCard(card, position.name);
-  }
+function handleCardSelect(card) {
+	const position = spreadPositions[game.selectedCards.length];
+	game.selectCard(card, position.name);
+}
 
-  async function handleGetReading() {
-    await game.getReading();
-  }
+async function handleGetReading() {
+	await game.getReading();
+}
 
-  function isCardSelected(cardId) {
-    return game.selectedCards.some(c => c.id === cardId);
-  }
+function isCardSelected(cardId) {
+	return game.selectedCards.some((c) => c.id === cardId);
+}
 </script>
 
 <div class="min-h-screen bg-black text-gothic-silver">
