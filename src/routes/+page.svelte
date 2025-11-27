@@ -1,8 +1,11 @@
 <script>
 import { spreadPositions } from "$lib/cards.js";
 import CardImage from "$lib/components/CardImage.svelte";
+import CardModal from "$lib/components/CardModal.svelte";
 import ReadingHistory from "$lib/components/ReadingHistory.svelte";
 import { game } from "$lib/store.svelte.js";
+
+let selectedCardForView = $state(null);
 
 function handleQuestionSubmit() {
 	if (game.question.trim()) {
@@ -28,6 +31,14 @@ async function handleGetDeepReading() {
 
 function isCardSelected(cardId) {
 	return game.selectedCards.some((c) => c.id === cardId);
+}
+
+function viewCard(card) {
+	selectedCardForView = card;
+}
+
+function closeCardModal() {
+	selectedCardForView = null;
 }
 </script>
 
@@ -152,13 +163,21 @@ function isCardSelected(cardId) {
                             class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 max-w-4xl mx-auto"
                         >
                             {#each game.selectedCards as selected}
-                                <div class="text-center">
-                                    <div class="mb-2">
+                                <button
+                                    onclick={() => viewCard(selected)}
+                                    class="text-center group cursor-pointer hover:opacity-80 transition-opacity"
+                                >
+                                    <div class="mb-2 relative">
                                         <CardImage
                                             src={selected.image}
                                             alt={selected.name}
-                                            className="w-full border border-gothic-silver/20"
+                                            className="w-full border border-gothic-silver/20 group-hover:border-gothic-crimson transition-colors"
                                         />
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50"
+                                        >
+                                            <span class="text-white text-xs">View Details</span>
+                                        </div>
                                     </div>
                                     <p
                                         class="text-xs text-gothic-crimson font-light mb-1"
@@ -168,7 +187,7 @@ function isCardSelected(cardId) {
                                     <p class="text-xs text-white/70 font-light">
                                         {selected.name}
                                     </p>
-                                </div>
+                                </button>
                             {/each}
                         </div>
                     </div>
@@ -193,14 +212,22 @@ function isCardSelected(cardId) {
                         class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12"
                     >
                         {#each game.selectedCards as selected}
-                            <div
-                                class="border border-gothic-silver/10 p-3 md:p-4"
+                            <button
+                                onclick={() => viewCard(selected)}
+                                class="border border-gothic-silver/10 hover:border-gothic-crimson p-3 md:p-4 transition-all group cursor-pointer"
                             >
-                                <CardImage
-                                    src={selected.image}
-                                    alt={selected.name}
-                                    className="w-full mb-3 border border-gothic-silver/20"
-                                />
+                                <div class="relative">
+                                    <CardImage
+                                        src={selected.image}
+                                        alt={selected.name}
+                                        className="w-full mb-3 border border-gothic-silver/20 group-hover:border-gothic-crimson transition-colors"
+                                    />
+                                    <div
+                                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 mb-3"
+                                    >
+                                        <span class="text-white text-xs">Tap for Details</span>
+                                    </div>
+                                </div>
                                 <p
                                     class="text-xs text-gothic-crimson text-center mb-1 font-light"
                                 >
@@ -221,7 +248,7 @@ function isCardSelected(cardId) {
                                 >
                                     {selected.description}
                                 </p>
-                            </div>
+                            </button>
                         {/each}
                     </div>
                 </div>
@@ -327,3 +354,5 @@ function isCardSelected(cardId) {
         <ReadingHistory />
     </div>
 </div>
+
+<CardModal card={selectedCardForView} onClose={closeCardModal} />
