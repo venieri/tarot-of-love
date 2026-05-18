@@ -13,3 +13,6 @@ vite.config.ts.timestamp-*
 #src/lib/config.js
 .vercel
 .env*.local
+
+# Duplicate asset folder (not used by the app)
+static/images copy/

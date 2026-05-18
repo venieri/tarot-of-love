@@ -49,7 +49,7 @@ describe("Cards Data", () => {
 
 		it("should have valid image paths", () => {
 			cards.forEach((card) => {
-				expect(card.image).toMatch(/^\/images\/.+\.png$/);
+				expect(card.image).toMatch(/^\/images\/.+\.webp$/);
 			});
 		});
 	});
