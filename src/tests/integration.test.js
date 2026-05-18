@@ -2,10 +2,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/svelte";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Page from "../routes/+page.svelte";
 
-vi.mock("../lib/config.js", () => ({
-	OPENAI_API_KEY: "test-api-key",
-}));
-
 describe("Tarot Reading Flow", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -135,9 +131,8 @@ describe("Tarot Reading Flow", () => {
 
 		const mockReading = "Your cards reveal a profound journey...";
 		global.fetch = vi.fn().mockResolvedValue({
-			json: async () => ({
-				choices: [{ message: { content: mockReading } }],
-			}),
+			ok: true,
+			json: async () => ({ reading: mockReading }),
 		});
 
 		render(Page);
@@ -190,9 +185,8 @@ describe("Tarot Reading Flow", () => {
 
 		const mockReading = "Your cards reveal...";
 		global.fetch = vi.fn().mockResolvedValue({
-			json: async () => ({
-				choices: [{ message: { content: mockReading } }],
-			}),
+			ok: true,
+			json: async () => ({ reading: mockReading }),
 		});
 
 		render(Page);

@@ -39,7 +39,7 @@ let showHistory = $state(false);
 							</p>
 						</div>
 
-						<div class="grid grid-cols-5 gap-2 mb-4">
+						<div class="grid grid-cols-5 gap-2 mb-4 items-start">
 							{#each entry.cards as card}
 								<div class="text-center">
 									<CardImage

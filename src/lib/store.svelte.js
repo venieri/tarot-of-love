@@ -1,8 +1,5 @@
 import { cards } from "./cards.js";
 
-// Get API key from environment variable
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-
 // Reading history storage
 const HISTORY_KEY = "tarot-reading-history";
 
@@ -28,6 +25,26 @@ function saveToHistory(entry) {
 	} catch (error) {
 		console.error("Error saving to history:", error);
 	}
+}
+
+async function fetchReading(question, selectedCards, deep) {
+	const response = await fetch("/api/reading", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			question,
+			cards: selectedCards,
+			deep,
+		}),
+	});
+
+	const data = await response.json();
+
+	if (!response.ok) {
+		throw new Error(data.error || "Failed to generate reading");
+	}
+
+	return data.reading;
 }
 
 export class TarotGame {
@@ -69,71 +86,12 @@ export class TarotGame {
 	async getReading() {
 		this.isLoadingReading = true;
 		try {
-			const response = await fetch(
-				"https://api.openai.com/v1/chat/completions",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${OPENAI_API_KEY}`,
-					},
-					body: JSON.stringify({
-						model: "gpt-4",
-						messages: [
-							{
-								role: "system",
-								content: `You are Lydia Venieri, artist and creator of this mystical Tarot of Love deck. Your voice is poetic, philosophical, and deeply symbolic. You speak with the wisdom of ancient myths, the insights of depth psychology, and the mystery of the cosmos.
-
-Structure your reading as follows:
-
-1. ORACLE ABSTRACT (First paragraph):
-   - Present the CONCLUSION upfront - the essential insight and outcome
-   - Distill the entire reading into its core truth (2-3 sentences)
-   - This is the oracle's answer - direct, profound, complete
-   - End with a blank line
-
-2. DETAILED READING (Remaining paragraphs):
-   - Weave mythological archetypes with psychological insights
-   - Use poetic, evocative language that honors the mystery
-   - Explore the hidden currents beneath surface events
-   - Connect the personal journey to universal patterns
-   - Look at the cards in sequence (Past → Present → Future → Root → Potential)
-   - Speak of transformation, shadow work, and the soul's evolution
-   - Reference themes of isolation and connection, power and surrender, time and eternity
-   - Be contemplative, profound, and compassionate
-
-The cards reveal what already exists in the depths. Look for connections between opposing cards (Past & Potential, Present & Root). The cards offer insight into the soul's journey, not definitive answers.`,
-							},
-							{
-								role: "user",
-								content: `Question: "${this.question}"
-
-Cross Spread Reading:
-${this.selectedCards
-	.map(
-		(card, i) => `
-Card ${i + 1} - ${card.position}:
-${card.name}
-"${card.byeline}"
-${card.description}
-Reverse meaning: ${card.reverse}
-`,
-	)
-	.join("\n")}
-
-Please provide the reading with the ORACLE ABSTRACT first (conclusion/essence), followed by the detailed interpretation.`,
-							},
-						],
-						temperature: 0.8,
-						max_tokens: 1000,
-					}),
-				},
+			this.reading = await fetchReading(
+				this.question,
+				this.selectedCards,
+				false,
 			);
 
-			const data = await response.json();
-			this.reading = data.choices[0].message.content;
-
-			// Save to history
 			const historyEntry = {
 				id: Date.now(),
 				timestamp: new Date().toISOString(),
@@ -148,13 +106,15 @@ Please provide the reading with the ORACLE ABSTRACT first (conclusion/essence), 
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
 
-			// Send email if requested
 			if (this.sendEmail && this.email) {
 				await this.sendReadingEmail(historyEntry);
 			}
 		} catch (error) {
 			console.error("Error getting reading:", error);
-			this.reading = "Unable to generate reading. Please try again.";
+			this.reading =
+				error instanceof Error
+					? `Unable to generate reading: ${error.message}`
+					: "Unable to generate reading. Please try again.";
 		} finally {
 			this.isLoadingReading = false;
 		}
@@ -163,77 +123,12 @@ Please provide the reading with the ORACLE ABSTRACT first (conclusion/essence), 
 	async getDeepReading() {
 		this.isLoadingReading = true;
 		try {
-			const response = await fetch(
-				"https://api.openai.com/v1/chat/completions",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${OPENAI_API_KEY}`,
-					},
-					body: JSON.stringify({
-						model: "gpt-4",
-						messages: [
-							{
-								role: "system",
-								content: `You are Lydia Venieri, artist and creator of this mystical Tarot of Love deck. Your voice is poetic, philosophical, and deeply symbolic. You speak with the wisdom of ancient myths, the insights of depth psychology, and the mystery of the cosmos.
-
-For this DEEP RESEARCH READING, provide an extensive, multi-layered interpretation:
-
-1. ORACLE ABSTRACT (First paragraph):
-   - Present the CONCLUSION upfront - the essential insight and outcome
-   - Distill the entire reading into its core truth (2-3 sentences)
-   - End with a blank line
-
-2. COMPREHENSIVE ANALYSIS:
-   - Examine each card's archetypal symbolism in depth
-   - Explore mythological parallels (Greek, Egyptian, Celtic traditions)
-   - Apply Jungian depth psychology (shadow, anima/animus, individuation)
-   - Discuss alchemical transformations and symbolic death/rebirth
-   - Analyze the elemental and planetary correspondences
-   - Reveal the hidden dialogue between opposing positions
-   - Connect to timeless philosophical questions
-   - Offer contemplative practices or meditations
-   - Suggest creative or ritual expressions of the reading's wisdom
-
-3. SOUL'S JOURNEY:
-   - Map the path from where the querent has been to where they're going
-   - Identify the threshold moments and liminal spaces
-   - Illuminate the gifts hidden within challenges
-   - Speak to the eternal questions of love, meaning, and becoming
-
-Be expansive, profound, and transformative. This is the deep dive into the mysteries.`,
-							},
-							{
-								role: "user",
-								content: `Question: "${this.question}"
-
-Cross Spread Reading:
-${this.selectedCards
-	.map(
-		(card, i) => `
-Card ${i + 1} - ${card.position}:
-${card.name}
-"${card.byeline}"
-${card.description}
-Reverse meaning: ${card.reverse}
-`,
-	)
-	.join("\n")}
-
-Please provide the comprehensive deep research reading with the oracle abstract first, followed by the extensive multi-layered interpretation.`,
-							},
-						],
-						temperature: 0.85,
-						max_tokens: 2500,
-					}),
-				},
+			this.reading = await fetchReading(
+				this.question,
+				this.selectedCards,
+				true,
 			);
 
-			const data = await response.json();
-			this.reading = data.choices[0].message.content;
-
-			// Update history with deep reading
 			const historyEntry = {
 				id: Date.now(),
 				timestamp: new Date().toISOString(),
@@ -249,13 +144,15 @@ Please provide the comprehensive deep research reading with the oracle abstract 
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
 
-			// Send email if requested
 			if (this.sendEmail && this.email) {
 				await this.sendReadingEmail(historyEntry);
 			}
 		} catch (error) {
 			console.error("Error getting deep reading:", error);
-			this.reading = "Unable to generate deep reading. Please try again.";
+			this.reading =
+				error instanceof Error
+					? `Unable to generate deep reading: ${error.message}`
+					: "Unable to generate deep reading. Please try again.";
 		} finally {
 			this.isLoadingReading = false;
 		}
