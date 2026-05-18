@@ -23,14 +23,17 @@ function handleKeydown(e) {
 		onkeydown={handleKeydown}
 		role="dialog"
 		aria-modal="true"
+		aria-label="{card.name} card details"
 		tabindex="-1"
 	>
 		<div
 			class="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-black border border-gothic-silver/30 p-6 md:p-8"
 		>
 			<button
+				type="button"
 				onclick={onClose}
-				class="absolute top-4 right-4 text-white/50 hover:text-white text-2xl leading-none"
+				class="absolute top-2 right-2 z-10 flex min-h-11 min-w-11 items-center justify-center rounded-full
+					text-2xl leading-none text-white/50 hover:bg-white/10 hover:text-white"
 				aria-label="Close"
 			>
 				×
@@ -38,11 +41,23 @@ function handleKeydown(e) {
 
 			<div class="flex flex-col md:flex-row gap-6">
 				<div class="flex-shrink-0 md:w-48">
-					<CardImage
-						src={card.image}
-						alt={card.name}
-						className="w-full border border-gothic-silver/20"
-					/>
+					<button
+						type="button"
+						onclick={onClose}
+						class="group block w-full text-left"
+						aria-label="Close card details"
+					>
+						<CardImage
+							src={card.image}
+							alt={card.name}
+							className="w-full border border-gothic-silver/20 group-active:border-gothic-crimson transition-colors"
+						/>
+						<p
+							class="mt-2 text-center text-xs font-light text-white/40 md:hidden"
+						>
+							Tap card to close
+						</p>
+					</button>
 				</div>
 
 				<div class="flex-1">

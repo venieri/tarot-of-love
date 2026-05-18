@@ -4,9 +4,26 @@ import CardImage from "$lib/components/CardImage.svelte";
 import CardModal from "$lib/components/CardModal.svelte";
 import Markdown from "$lib/components/Markdown.svelte";
 import ReadingHistory from "$lib/components/ReadingHistory.svelte";
+import { env } from "$env/dynamic/public";
 import { game } from "$lib/store.svelte.js";
 
+const showEmailOption = env.PUBLIC_SHOW_EMAIL_OPTION === "true";
+
 let selectedCardForView = $state(null);
+let readingFetchStarted = $state(false);
+let isSendingEmail = $state(false);
+let emailSent = $state(false);
+
+$effect(() => {
+	if (game.gameStage === "reading" && game.selectedCards.length === 5) {
+		if (!readingFetchStarted && !game.reading && !game.isLoadingReading) {
+			readingFetchStarted = true;
+			void game.getReading();
+		}
+	} else {
+		readingFetchStarted = false;
+	}
+});
 
 function handleQuestionSubmit() {
 	if (game.question.trim()) {
@@ -22,14 +39,6 @@ function handleCardSelect(card) {
 	game.selectCard(card, position.name);
 }
 
-async function handleGetReading() {
-	await game.getReading();
-}
-
-async function handleGetDeepReading() {
-	await game.getDeepReading();
-}
-
 function isCardSelected(cardId) {
 	return game.selectedCards.some((c) => c.id === cardId);
 }
@@ -40,6 +49,19 @@ function viewCard(card) {
 
 function closeCardModal() {
 	selectedCardForView = null;
+}
+
+function readingSucceeded() {
+	return game.reading && !game.reading.startsWith("Unable to generate");
+}
+
+async function handleSendEmail() {
+	if (!game.sendEmail || !game.email.trim()) return;
+	isSendingEmail = true;
+	emailSent = false;
+	const ok = await game.sendCurrentReadingEmail();
+	isSendingEmail = false;
+	if (ok) emailSent = true;
 }
 </script>
 
@@ -254,48 +276,6 @@ function closeCardModal() {
                     </div>
                 </div>
 
-                {#if !game.reading && !game.isLoadingReading}
-                    <div
-                        class="max-w-xl mx-auto border-t border-gothic-silver/20 pt-8 md:pt-12"
-                    >
-                        <div class="mb-6 space-y-4">
-                            <div class="flex items-start gap-3">
-                                <input
-                                    type="checkbox"
-                                    id="sendEmail"
-                                    bind:checked={game.sendEmail}
-                                    class="mt-1 w-4 h-4 bg-transparent border border-gothic-silver/30
-                                   focus:ring-gothic-crimson focus:ring-1"
-                                />
-                                <label
-                                    for="sendEmail"
-                                    class="text-sm font-light text-white/70 cursor-pointer"
-                                >
-                                    Send reading to my email (optional)
-                                </label>
-                            </div>
-                            {#if game.sendEmail}
-                                <input
-                                    type="email"
-                                    bind:value={game.email}
-                                    placeholder="your@email.com"
-                                    class="w-full px-4 py-2 bg-transparent border border-gothic-silver/30
-                                   focus:outline-none focus:border-gothic-crimson text-white
-                                   placeholder-white/30 font-light text-sm"
-                                />
-                            {/if}
-                        </div>
-                        <button
-                            onclick={handleGetReading}
-                            class="w-full bg-transparent border border-gothic-crimson text-gothic-crimson
-                     px-6 py-3 md:py-4 font-light text-sm md:text-base tracking-wide
-                     hover:bg-gothic-crimson hover:text-black transition-all"
-                        >
-                            RECEIVE YOUR READING
-                        </button>
-                    </div>
-                {/if}
-
                 {#if game.isLoadingReading}
                     <div
                         class="text-center border-t border-gothic-silver/20 pt-8 md:pt-12"
@@ -308,7 +288,7 @@ function closeCardModal() {
                     </div>
                 {/if}
 
-                {#if game.reading}
+                {#if game.reading && !game.isLoadingReading}
                     <div
                         class="max-w-2xl mx-auto border-t border-gothic-silver/20 pt-8 md:pt-12"
                     >
@@ -322,19 +302,58 @@ function closeCardModal() {
                         >
                             <Markdown content={game.reading} />
                         </div>
-                        <!-- <div class="mb-6 text-center">
-                            <button
-                                onclick={handleGetDeepReading}
-                                class="inline-flex items-center gap-2 text-sm font-light text-gothic-crimson
-                             hover:text-white transition-colors group"
+
+                        {#if showEmailOption && readingSucceeded()}
+                            <div
+                                class="mb-6 space-y-4 border-t border-gothic-silver/20 pt-6"
                             >
-                                <span>Explore Deep Oracle Reading</span>
-                                <span
-                                    class="group-hover:translate-x-1 transition-transform"
-                                    >→</span
-                                >
-                            </button>
-                        </div> -->
+                                <div class="flex items-start gap-3">
+                                    <input
+                                        type="checkbox"
+                                        id="sendEmail"
+                                        bind:checked={game.sendEmail}
+                                        class="mt-1 w-4 h-4 bg-transparent border border-gothic-silver/30
+                                   focus:ring-gothic-crimson focus:ring-1"
+                                    />
+                                    <label
+                                        for="sendEmail"
+                                        class="text-sm font-light text-white/70 cursor-pointer"
+                                    >
+                                        Send reading to my email (optional)
+                                    </label>
+                                </div>
+                                {#if game.sendEmail}
+                                    <input
+                                        type="email"
+                                        bind:value={game.email}
+                                        placeholder="your@email.com"
+                                        class="w-full px-4 py-2 bg-transparent border border-gothic-silver/30
+                                   focus:outline-none focus:border-gothic-crimson text-white
+                                   placeholder-white/30 font-light text-sm"
+                                    />
+                                    <button
+                                        type="button"
+                                        onclick={handleSendEmail}
+                                        disabled={!game.email.trim() ||
+                                            isSendingEmail ||
+                                            emailSent}
+                                        class="w-full bg-transparent border border-gothic-silver/30 text-white
+                                   px-6 py-3 font-light text-sm tracking-wide
+                                   hover:border-gothic-crimson hover:text-gothic-crimson transition-all
+                                   disabled:opacity-30 disabled:cursor-not-allowed"
+                                    >
+                                        {#if emailSent}
+                                            SENT TO YOUR EMAIL
+                                        {:else if isSendingEmail}
+                                            SENDING...
+                                        {:else}
+                                            SEND READING TO EMAIL
+                                        {/if}
+                                    </button>
+                                {/if}
+                            </div>
+                        {/if}
+
                         <button
                             onclick={() => game.reset()}
                             class="w-full bg-transparent border border-gothic-silver/30 text-white
