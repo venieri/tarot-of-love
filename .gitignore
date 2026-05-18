@@ -12,3 +12,4 @@ vite.config.ts.timestamp-*
 # API Keys - IMPORTANT: Never commit!
 #src/lib/config.js
 .vercel
+.env*.local
