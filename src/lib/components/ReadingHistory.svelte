@@ -1,6 +1,7 @@
 <script>
 import { game } from "$lib/store.svelte.js";
 import CardImage from "./CardImage.svelte";
+import ShareReadingButton from "./ShareReadingButton.svelte";
 
 let showHistory = $state(false);
 </script>
@@ -58,19 +59,29 @@ let showHistory = $state(false);
 							<p class="text-xs text-white/70 font-light leading-relaxed">
 								{entry.reading.slice(0, 200)}...
 							</p>
-							<button
-								onclick={() => {
-									game.question = entry.question;
-									game.selectedCards = entry.cards;
-									game.reading = entry.reading;
-									game.gameStage = "reading";
-									showHistory = false;
-									window.scrollTo({ top: 0, behavior: "smooth" });
-								}}
-								class="mt-3 text-xs text-gothic-crimson hover:text-white transition-colors"
-							>
-								View full reading →
-							</button>
+							<div class="mt-3 flex flex-col gap-2">
+								<button
+									onclick={() => {
+										game.question = entry.question;
+										game.selectedCards = entry.cards;
+										game.reading = entry.reading;
+										game.shareId = entry.shareId || "";
+										game.gameStage = "reading";
+										showHistory = false;
+										window.scrollTo({ top: 0, behavior: "smooth" });
+									}}
+									class="text-xs text-gothic-crimson hover:text-white transition-colors text-left"
+								>
+									View full reading →
+								</button>
+								{#if entry.shareId}
+									<ShareReadingButton
+										question={entry.question}
+										reading={entry.reading}
+										shareId={entry.shareId}
+									/>
+								{/if}
+							</div>
 						</div>
 					</div>
 				{/each}

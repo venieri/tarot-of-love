@@ -9,6 +9,9 @@ const PROVIDERS = {
 	},
 };
 
+/** Models that use Zen /responses or /messages, not /chat/completions */
+const ZEN_NON_CHAT_MODEL_PREFIXES = ["gpt-", "claude-", "gemini-"];
+
 /**
  * @param {Record<string, string | undefined>} env
  */
@@ -37,11 +40,108 @@ export function getLlmConfig(env) {
 	const baseUrl = (env.LLM_BASE_URL || preset.baseUrl).replace(/\/$/, "");
 	const model = env.LLM_MODEL || preset.defaultModel;
 
+	if (
+		provider === "zen" &&
+		ZEN_NON_CHAT_MODEL_PREFIXES.some((prefix) => model.startsWith(prefix))
+	) {
+		throw new Error(
+			`Model "${model}" is not available on Zen chat/completions. ` +
+				`Use a chat model (e.g. minimax-m2.5-free, kimi-k2.5, qwen3.5-plus) or set LLM_PROVIDER=openai.`,
+		);
+	}
+
 	return { apiKey, baseUrl, model, provider };
 }
 
 /**
- * @param {{ apiKey: string, baseUrl: string, model: string }} config
+ * @param {unknown} message
+ */
+export function extractMessageContent(message) {
+	if (!message || typeof message !== "object") {
+		return null;
+	}
+
+	const { content, reasoning_content, refusal } = /** @type {Record<string, unknown>} */ (
+		message
+	);
+
+	if (typeof refusal === "string" && refusal.trim()) {
+		throw new Error(`LLM refused the request: ${refusal}`);
+	}
+
+	if (typeof content === "string" && content.trim()) {
+		return content;
+	}
+
+	if (Array.isArray(content)) {
+		const text = content
+			.filter(
+				(part) =>
+					part &&
+					typeof part === "object" &&
+					/** @type {{ type?: string, text?: string }} */ (part).type === "text" &&
+					typeof /** @type {{ text?: string }} */ (part).text === "string",
+			)
+			.map((part) => /** @type {{ text: string }} */ (part).text)
+			.join("");
+
+		if (text.trim()) {
+			return text;
+		}
+	}
+
+	// MiniMax and similar models on Zen may return text here when content is empty
+	if (typeof reasoning_content === "string" && reasoning_content.trim()) {
+		return reasoning_content;
+	}
+
+	return null;
+}
+
+/**
+ * @param {unknown} data
+ */
+export function parseChatCompletionResponse(data) {
+	if (!data || typeof data !== "object") {
+		throw new Error("LLM returned an invalid response");
+	}
+
+	const payload = /** @type {Record<string, unknown>} */ (data);
+
+	if (payload.error) {
+		const err = /** @type {{ message?: string }} */ (payload.error);
+		throw new Error(err.message || "LLM API error");
+	}
+
+	const choice = /** @type {Array<Record<string, unknown>> | undefined} */ (
+		payload.choices
+	)?.[0];
+
+	if (!choice) {
+		throw new Error(
+			`Unexpected LLM response shape (missing choices). Keys: ${Object.keys(payload).join(", ")}`,
+		);
+	}
+
+	let content = extractMessageContent(choice.message);
+
+	if (!content && typeof choice.text === "string" && choice.text.trim()) {
+		content = choice.text;
+	}
+
+	if (!content) {
+		const finishReason =
+			typeof choice.finish_reason === "string"
+				? choice.finish_reason
+				: "unknown";
+		throw new Error(`Empty LLM response (finish_reason: ${finishReason})`);
+	}
+
+	return content;
+}
+
+/**
+ * @param {{ apiKey: string, baseUrl: string, model: string, provider: string }} config
  * @param {{ messages: Array<{ role: string, content: string }>, temperature: number, max_tokens: number }} body
  */
 export async function createChatCompletion(config, body) {
@@ -57,16 +157,25 @@ export async function createChatCompletion(config, body) {
 		}),
 	});
 
-	const data = await response.json();
+	const raw = await response.text();
+	let data;
 
-	if (data.error) {
-		throw new Error(data.error.message || "LLM API error");
+	try {
+		data = JSON.parse(raw);
+	} catch {
+		throw new Error(
+			`LLM returned non-JSON (${response.status}): ${raw.slice(0, 200)}`,
+		);
 	}
 
-	const content = data.choices?.[0]?.message?.content;
-	if (!content) {
-		throw new Error("Unexpected response from LLM");
+	if (!response.ok) {
+		const err = data?.error;
+		const message =
+			typeof err === "object" && err && "message" in err
+				? String(err.message)
+				: `LLM request failed (${response.status})`;
+		throw new Error(message);
 	}
 
-	return content;
+	return parseChatCompletionResponse(data);
 }

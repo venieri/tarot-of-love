@@ -47,12 +47,42 @@ async function fetchReading(question, selectedCards, deep) {
 	return data.reading;
 }
 
+async function persistReadingForShare(question, selectedCards, reading) {
+	try {
+		const response = await fetch("/api/readings", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				question,
+				cards: selectedCards.map((c) => ({
+					name: c.name,
+					position: c.position,
+					image: c.image,
+				})),
+				reading,
+			}),
+		});
+
+		const data = await response.json();
+		if (!response.ok) {
+			console.error("Failed to save reading for share:", data.error);
+			return "";
+		}
+
+		return data.id || "";
+	} catch (error) {
+		console.error("Failed to save reading for share:", error);
+		return "";
+	}
+}
+
 export class TarotGame {
 	question = $state("");
 	shuffledDeck = $state([]);
 	selectedCards = $state([]);
 	gameStage = $state("question"); // 'question' | 'shuffle' | 'selection' | 'reading'
 	reading = $state("");
+	shareId = $state("");
 	isLoadingReading = $state(false);
 	email = $state("");
 	sendEmail = $state(false);
@@ -92,6 +122,12 @@ export class TarotGame {
 				false,
 			);
 
+			this.shareId = await persistReadingForShare(
+				this.question,
+				this.selectedCards,
+				this.reading,
+			);
+
 			const historyEntry = {
 				id: Date.now(),
 				timestamp: new Date().toISOString(),
@@ -102,11 +138,13 @@ export class TarotGame {
 					image: c.image,
 				})),
 				reading: this.reading,
+				shareId: this.shareId,
 			};
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
 		} catch (error) {
 			console.error("Error getting reading:", error);
+			this.shareId = "";
 			this.reading =
 				error instanceof Error
 					? `Unable to generate reading: ${error.message}`
@@ -125,6 +163,12 @@ export class TarotGame {
 				true,
 			);
 
+			this.shareId = await persistReadingForShare(
+				this.question,
+				this.selectedCards,
+				this.reading,
+			);
+
 			const historyEntry = {
 				id: Date.now(),
 				timestamp: new Date().toISOString(),
@@ -136,11 +180,13 @@ export class TarotGame {
 				})),
 				reading: this.reading,
 				isDeepReading: true,
+				shareId: this.shareId,
 			};
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
 		} catch (error) {
 			console.error("Error getting deep reading:", error);
+			this.shareId = "";
 			this.reading =
 				error instanceof Error
 					? `Unable to generate deep reading: ${error.message}`
@@ -204,6 +250,7 @@ export class TarotGame {
 		this.selectedCards = [];
 		this.gameStage = "question";
 		this.reading = "";
+		this.shareId = "";
 		this.isLoadingReading = false;
 		this.email = "";
 		this.sendEmail = false;

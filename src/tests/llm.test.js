@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { getLlmConfig } from "../lib/llm.js";
+import {
+	extractMessageContent,
+	getLlmConfig,
+	parseChatCompletionResponse,
+} from "../lib/llm.js";
 
 describe("getLlmConfig", () => {
 	it("defaults to OpenAI", () => {
@@ -38,5 +42,74 @@ describe("getLlmConfig", () => {
 		expect(() =>
 			getLlmConfig({ LLM_PROVIDER: "ollama", LLM_API_KEY: "x" }),
 		).toThrow(/Unknown LLM_PROVIDER/);
+	});
+
+	it("rejects GPT models on Zen chat/completions", () => {
+		expect(() =>
+			getLlmConfig({
+				LLM_PROVIDER: "zen",
+				LLM_API_KEY: "zen-test",
+				LLM_MODEL: "gpt-4",
+			}),
+		).toThrow(/not available on Zen chat\/completions/);
+	});
+});
+
+describe("parseChatCompletionResponse", () => {
+	it("reads standard OpenAI-style content", () => {
+		const text = parseChatCompletionResponse({
+			choices: [{ message: { content: "Your reading here." } }],
+		});
+		expect(text).toBe("Your reading here.");
+	});
+
+	it("reads reasoning_content when content is empty", () => {
+		const text = parseChatCompletionResponse({
+			choices: [
+				{
+					message: {
+						content: "",
+						reasoning_content: "Oracle speaks through the cards.",
+					},
+					finish_reason: "stop",
+				},
+			],
+		});
+		expect(text).toBe("Oracle speaks through the cards.");
+	});
+
+	it("reads multipart content arrays", () => {
+		const text = parseChatCompletionResponse({
+			choices: [
+				{
+					message: {
+						content: [{ type: "text", text: "Line one. " }, { type: "text", text: "Line two." }],
+					},
+				},
+			],
+		});
+		expect(text).toBe("Line one. Line two.");
+	});
+
+	it("throws on API error payloads", () => {
+		expect(() =>
+			parseChatCompletionResponse({
+				error: { message: "insufficient_quota" },
+			}),
+		).toThrow(/insufficient_quota/);
+	});
+
+	it("throws when choices are missing", () => {
+		expect(() => parseChatCompletionResponse({ id: "resp_123" })).toThrow(
+			/missing choices/,
+		);
+	});
+});
+
+describe("extractMessageContent", () => {
+	it("throws on refusal", () => {
+		expect(() =>
+			extractMessageContent({ refusal: "content policy" }),
+		).toThrow(/refused/);
 	});
 });

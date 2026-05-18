@@ -4,6 +4,7 @@ import CardImage from "$lib/components/CardImage.svelte";
 import CardModal from "$lib/components/CardModal.svelte";
 import Markdown from "$lib/components/Markdown.svelte";
 import ReadingHistory from "$lib/components/ReadingHistory.svelte";
+import ShareReadingButton from "$lib/components/ShareReadingButton.svelte";
 import { env } from "$env/dynamic/public";
 import { game } from "$lib/store.svelte.js";
 
@@ -302,6 +303,14 @@ async function handleSendEmail() {
                         >
                             <Markdown content={game.reading} />
                         </div>
+
+                        {#if readingSucceeded() && game.shareId}
+                            <ShareReadingButton
+                                question={game.question}
+                                reading={game.reading}
+                                shareId={game.shareId}
+                            />
+                        {/if}
 
                         {#if showEmailOption && readingSucceeded()}
                             <div
