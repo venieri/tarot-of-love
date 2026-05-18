@@ -105,10 +105,6 @@ export class TarotGame {
 			};
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
-
-			if (this.sendEmail && this.email) {
-				await this.sendReadingEmail(historyEntry);
-			}
 		} catch (error) {
 			console.error("Error getting reading:", error);
 			this.reading =
@@ -143,10 +139,6 @@ export class TarotGame {
 			};
 			saveToHistory(historyEntry);
 			this.history = loadHistory();
-
-			if (this.sendEmail && this.email) {
-				await this.sendReadingEmail(historyEntry);
-			}
 		} catch (error) {
 			console.error("Error getting deep reading:", error);
 			this.reading =
@@ -189,6 +181,23 @@ export class TarotGame {
 		}
 	}
 
+	async sendCurrentReadingEmail() {
+		if (!this.email?.trim() || !this.reading) {
+			return false;
+		}
+
+		return this.sendReadingEmail({
+			question: this.question,
+			cards: this.selectedCards.map((c) => ({
+				name: c.name,
+				position: c.position,
+				image: c.image,
+			})),
+			reading: this.reading,
+			isDeepReading: false,
+		});
+	}
+
 	reset() {
 		this.question = "";
 		this.shuffledDeck = [];
@@ -196,6 +205,8 @@ export class TarotGame {
 		this.gameStage = "question";
 		this.reading = "";
 		this.isLoadingReading = false;
+		this.email = "";
+		this.sendEmail = false;
 	}
 }
 

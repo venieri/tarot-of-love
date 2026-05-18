@@ -120,13 +120,13 @@ describe("Tarot Reading Flow", () => {
 		}
 
 		await waitFor(() => {
-			expect(screen.getByText(/RECEIVE YOUR READING/i)).toBeInTheDocument();
+			expect(screen.getByText(/Lydia contemplates/i)).toBeInTheDocument();
 		});
 
 		vi.useRealTimers();
 	});
 
-	it("should generate reading when button clicked", async () => {
+	it("should auto-generate reading after 5 cards selected", async () => {
 		vi.useFakeTimers();
 
 		const mockReading = "Your cards reveal a profound journey...";
@@ -158,16 +158,8 @@ describe("Tarot Reading Flow", () => {
 			vi.advanceTimersByTime(100);
 		}
 
-		// Generate reading
 		await waitFor(() => {
-			expect(screen.getByText(/RECEIVE YOUR READING/i)).toBeInTheDocument();
-		});
-
-		const readingButton = screen.getByText(/RECEIVE YOUR READING/i);
-		await fireEvent.click(readingButton);
-
-		await waitFor(() => {
-			expect(screen.getByText(/The Oracle contemplates/i)).toBeInTheDocument();
+			expect(screen.getByText(/Lydia contemplates/i)).toBeInTheDocument();
 		});
 
 		await waitFor(
@@ -203,14 +195,12 @@ describe("Tarot Reading Flow", () => {
 			vi.advanceTimersByTime(100);
 		}
 
-		await waitFor(() => {
-			const readingButton = screen.getByText(/RECEIVE YOUR READING/i);
-			fireEvent.click(readingButton);
-		});
-
-		await waitFor(() => {
-			expect(screen.getByText(mockReading)).toBeInTheDocument();
-		});
+		await waitFor(
+			() => {
+				expect(screen.getByText(mockReading)).toBeInTheDocument();
+			},
+			{ timeout: 5000 },
+		);
 
 		// Click new reading
 		const newReadingButton = screen.getByText(/NEW READING/i);
