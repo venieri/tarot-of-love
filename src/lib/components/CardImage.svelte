@@ -1,12 +1,10 @@
 <script>
 const { src, alt, className = "" } = $props();
 
-// Convert /images/card-name.png to base path for WebP/AVIF
-const basePath = src.replace(".png", "");
+const basePath = src.replace(/\.(png|webp)$/, "");
 </script>
 
 <picture>
-  <source srcset="{basePath}.avif" type="image/avif" />
-  <source srcset="{basePath}.webp" type="image/webp" />
-  <img {src} {alt} class={className} loading="lazy" />
+	<source srcset="{basePath}.avif" type="image/avif" />
+	<img src="{basePath}.webp" {alt} class={className} loading="lazy" />
 </picture>

@@ -1,0 +1,16 @@
+# Build artifacts (Vercel builds fresh)
+build
+.svelte-kit
+.vercel
+
+# Dependencies
+node_modules
+
+# Desktop app (not deployed to web)
+src-tauri
+
+# Accidental duplicate folder if it reappears
+static/images copy
+
+# Large legacy PNGs — cards use webp + avif only
+static/images/*.png

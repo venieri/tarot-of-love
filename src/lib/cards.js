@@ -6,7 +6,7 @@ export const cards = [
 		description:
 			"In the empty cell of the prison, the imagination flourishes. This isolation promises a journey. The winter hibernation brings dreams of summer. Saturn rhythmically follows the steps of supervising order secretly from the sun. In the security of inwardness, the grains carelessly dream of existence.",
 		reverse: "existential problem",
-		image: "/images/01-The-Cage-with-Wings.png",
+		image: "/images/01-The-Cage-with-Wings.webp",
 	},
 	{
 		id: 2,
@@ -15,7 +15,7 @@ export const cards = [
 		description:
 			"The language of silence hides secrets.\nThe secrets connect the people like clandestine telluric currents.\nParallel stories and similarities create sympathies and preferences. This projection is not about friendship; it is about a companionship which endures the time of the common journey. The isolation which leads to a monastic tendency creates a community of lonely monks.",
 		reverse: "Separation or retirement for a relationship or responsibility.",
-		image: "/images/02-The-Tower.png",
+		image: "/images/02-The-Tower.webp",
 	},
 	{
 		id: 3,
@@ -24,7 +24,7 @@ export const cards = [
 		description:
 			"The necessity of the defended position provokes enemies, which often come from the imagination. The shield of the knight also isolates the people of his choice.  Support and security come with contracts of submission and imposed conditions. The knight has a polemic position, sentimental boarders, competitive confrontation and military protocol.  All these safety measures feed insecurity.",
 		reverse: "Onsite conflict and confusion.",
-		image: "/images/03-The-Knight.png",
+		image: "/images/03-The-Knight.webp",
 	},
 	{
 		id: 4,
@@ -33,7 +33,7 @@ export const cards = [
 		description:
 			"The roots relate the contradictory forces. Dividing and conquering silently equalizes the affairs within the family or at work.\nThe clock is like a pendulum which balances the situations, a rocking chair in the shadow with a rhythmic movement which orchestrates the cosmos with impersonal charm and alternative tolerance.\nSensual calmness is the power of motherhood which rules.",
 		reverse: "Endogenic narcissism; the law above the human.",
-		image: "/images/04-The-Clock.png",
+		image: "/images/04-The-Clock.webp",
 	},
 	{
 		id: 5,
@@ -42,7 +42,7 @@ export const cards = [
 		description:
 			"At the meeting of the facts the uniform and the protocol order the hierarchy towards the movements, which pull the goal.\nWith the same logic, the map defines a trajectory. Monumental steps order the dance of DNA refusing to accept the adjustments. Like that we stay who we are, monuments of ourselves, with a defending routine against adventures that could betray.\nThe king of values and tradition rules from the center of his satellites holding the position which he deserves, the faithful heir of the never changing orbit.",
 		reverse: "losing manners and ideology.",
-		image: "/images/05-The-Obelisk.png",
+		image: "/images/05-The-Obelisk.webp",
 	},
 	{
 		id: 6,
@@ -51,7 +51,7 @@ export const cards = [
 		description:
 			"The conception through sensuality is deliciously dangerous when without boundaries. Often the distracted and emotional environment floods internally and conquers the inner self unconditionally. The delusion of the self hedonistically rewards the love.\nWithout fear and passion, with the ability to become skilled technically, or with fear and passion that leads to pain.\n",
 		reverse: "Complaints, insecurity, and masochism.",
-		image: "/images/06-The-Bowl.png",
+		image: "/images/06-The-Bowl.webp",
 	},
 	{
 		id: 7,
@@ -60,7 +60,7 @@ export const cards = [
 		description:
 			"The Black Heart is the joker of the underworld powers. It stings with a passionate ghost of the past. It possesses the momentum of the bad moment with violence and jealousy. It lingers in memory with a familiar feeling of injustice and begins a new conflict out of nothing. The bitterness of the oppressed and love that transforms into poison and revenge. The Black Heart is a moving power which arms sadness with power and audacity. It drives conflict to the point of change.",
 		reverse: "every disaster can lead to new opportunities",
-		image: "/images/07-The-Black-Heart.png",
+		image: "/images/07-The-Black-Heart.webp",
 	},
 	{
 		id: 8,
@@ -71,7 +71,7 @@ export const cards = [
 			"An adventurous guy with theatrical behavior and pervasive humor, Mr. Diamond often leads to the absurdity of his charm with friendly flirtation. The most important are the game's outfit rather than the rules. It emphasizes style and political charm, always aiming at the cultural (civilized) dialogue, despite the stubborn belief that life is a gentle sport",
 		reverse:
 			"His oppressed complaint suddenly revolts without logic or warning",
-		image: "/images/08-Mr-Diamond.png",
+		image: "/images/08-Mr-Diamond.webp",
 	},
 	{
 		id: 9,
@@ -81,7 +81,7 @@ export const cards = [
 		description:
 			"A smile like that of the Mona Lisa can intimidate. It is the mysterious invitation of the player. Cheating, stealing and mockery are all part of the game as elements of provocation. The fault of existence is responsible for enlightening the crimes under the auspice of love. The Jack of Spades values his independence and replaces friendship with acquaintances. Commitment is not part of the game.",
 		reverse: "too much freedom leads to unconsciousness",
-		image: "/images/09-The-Jack-of-Clubs.png",
+		image: "/images/09-The-Jack-of-Clubs.webp",
 	},
 	{
 		id: 10,
@@ -90,7 +90,7 @@ export const cards = [
 		description:
 			"The acceptance of love.\nFriendship is an honored Queen.\n\nCelebrating with enjoyment, largeness, and comfort.\nThe care of a big hug with low, warm frequencies adopts what is carried and taken under her wings.\nThe wave sculpts the resisting hard rock, and the wind transforms her into dust caressing her immobility perpetually.\n",
 		reverse: "Love as an authority, demystification.",
-		image: "/images/10-The-Queen-of-Hearts.png",
+		image: "/images/10-The-Queen-of-Hearts.webp",
 	},
 	{
 		id: 11,
@@ -99,7 +99,7 @@ export const cards = [
 		description:
 			"Joy found in the holiday, at the carefree seaside, and in the inspiration of the moment are all traits of the Key of Life.\n\nThe Key of Life is the realization of the agreeable friendship which connects us with the cosmos.   The currents incarnate the material by movement; life participates through the rhythmic pulse which transmits across space and time.\nA deep relationship with the elements of nature and objects, which encompasses and orchestrates the soul of the Anima Mundi (the Soul of the World).\nAn esoteric and clandestine contact that imposes coordination on similar trajectories celebrating the existence through a shared point of view.",
 		reverse: "The fragile element of velocity, the danger of expiry.",
-		image: "/images/11-The-Key-of-Life.png",
+		image: "/images/11-The-Key-of-Life.webp",
 	},
 	{
 		id: 12,
@@ -108,7 +108,7 @@ export const cards = [
 		description:
 			"There is a dark charm which conquers with domination and restrictions. The Queen of Spades saves energy with high calculation and erratic sexuality. Her minimalistic style and laconic behavior confront with the present with a sensual aggression. The conqueror demands full surrender before giving herself in.",
 		reverse: "Even sensual aggression becomes tiring",
-		image: "/images/12-The-Queen-of-Spades.png",
+		image: "/images/12-The-Queen-of-Spades.webp",
 	},
 	{
 		id: 13,
@@ -117,7 +117,7 @@ export const cards = [
 		description:
 			"Centralized power towards the common interest isolates gracefully with tenderness and distant behavior a higher commanding position.\nThe role of a beautiful appearance energetically demands the self-creating satellites, which also demand energy, giving it back positively or negatively.\nThe judge's  authority gives her the power to be influenced by her majestic tolerance and generosity.  The endless giving will conquer as a necessity, and the benevolent conquers the deceiver.",
 		reverse: "Narcissistic isolation",
-		image: "/images/13-Queen-Bee.png",
+		image: "/images/13-Queen-Bee.webp",
 	},
 	{
 		id: 14,
@@ -127,7 +127,7 @@ export const cards = [
 		description:
 			"The leader is a figure of strength, preoccupied with order, with execution and the with the team.  With selfless devotion, interest, and knowledge, the Amazon exterminates every second thought neglecting the necessities of existence.  Offering brave support and putting laws everywhere, she dominates weakness. The Amazon involves herself into the personal orbit of the others and often imposes the rules,  goals and the schedule. However, with any external approach, the nucleus reacts.",
 		reverse: "Dictatorship on what we possess.",
-		image: "/images/14-The-Amazon.png",
+		image: "/images/14-The-Amazon.webp",
 	},
 	{
 		id: 15,
@@ -136,7 +136,7 @@ export const cards = [
 		description:
 			"Athena Pallas advises with strategic wisdom, prudence, patience, and persistence.  In friendship with opponents, she imposes acceptable conditions and initiates them into the common interest.\nSecrecy and confession demand the initiation of common signs or signals, automatic movements, and defensive positions.\nThe goddess visits the conscience to initiate the thought in a supportive friendship, which instructs strategy.\nThe strategy teaches the study of the characters, the reading of the elements, the discovery of the path, and the judgments of the situation. She shows the right direction to the opposing powers and adjusts the focus to where ever is possible.",
 		reverse: "The extermination of the momentum.",
-		image: "/images/15-Athena.png",
+		image: "/images/15-Athena.webp",
 	},
 	{
 		id: 16,
@@ -145,7 +145,7 @@ export const cards = [
 		description:
 			"The truth is a pattern, an archetype that never changes.  She hides underneath the ever evolving paths, characters, and adventures.\nCosmic help unfolds as being blessed. Nemesis puts order to the disorder. Lucidity gives solace to memory that helps to project clear thought into the future.  Her role is to predict and with prudence to prepare. At the end of the path, all is visible.",
 		reverse: "The disinfection of passion, avoidance of adventure.",
-		image: "/images/16-Lucidity.png",
+		image: "/images/16-Lucidity.webp",
 	},
 	{
 		id: 17,
@@ -154,7 +154,7 @@ export const cards = [
 		description:
 			"The enemy which we learn to hate is not the enemy, but the unknown.\nThe captive princess identifies with the dragon once she has drunk his power.\nThe dragon waters the earth with blood, the womb with sperm, and becomes absorbed. The motherhood purifies the past by repetition. The overcoming of the fear follows a truce and union. The merging of the opposites is the archetypical diagram that confirms the meeting of old acquaintances, situations, and characters.\nBeyond the fear and the pain, the unknown does not exist. Memory occupies the handling of everything.",
 		reverse: "Dark side",
-		image: "/images/17-The-Dragon-Princess.png",
+		image: "/images/17-The-Dragon-Princess.webp",
 	},
 	{
 		id: 18,
@@ -163,7 +163,7 @@ export const cards = [
 		description:
 			"The coordination of the big and the small is united by a tremendous attraction and parallel movements, which unifies the orbits and influences the destinies. The initiation of two units, maturity, and freshness, in the map of the stars. Being unified, the Big and the Little Dipper can bridge between orbits. They open secret doors and paths in the universe, creating an infinite family tree. Trust and love are on autopilot in the darkness.",
 		reverse: "Static pleasure and childish lethargy.",
-		image: "/images/18-The-Big-and-The-Little-Dipper.png",
+		image: "/images/18-The-Big-and-The-Little-Dipper.webp",
 	},
 	{
 		id: 19,
@@ -172,7 +172,7 @@ export const cards = [
 		description:
 			"The opposite powers of creation are the foundation of stability. Gravity is the moment of melancholy and reflection before taking action. The Gravity card signifies a time of silence during a negative orbit when the mind can absorb the full picture before making decisions. Acceptance of mistakes, new points of view, and control of the situation creates a new mindset. The weight of the material grounds the decisions that have to be made before the start of a new project.",
 		reverse: "The need for rest",
-		image: "/images/19-Gravity.png",
+		image: "/images/19-Gravity.webp",
 	},
 	{
 		id: 20,
@@ -181,7 +181,7 @@ export const cards = [
 		description:
 			"An inexhaustible source of creation is the never ending dance of the universe.\nThe centripetal and the centrifuge stretch the dancer's understanding of the whole.\nInsight permeates and unites with altruism and unification.\nThe pace of my steps defines chaos, overcoming the fear of the unknown and opening up communication routes.\nOn the vast scale of everything the details dissolve, vision clears, the unnecessary are discarded, while the mind is filled with an incredible energy of comprehension.\nIn the third round of the dance, the leader passes the torch.  In the fifth, the steps are now part of the self. In the seventh, the consciousness has unlocked and absorbed the knowledge.",
 		reverse: "lack of limits, exhaustion",
-		image: "/images/20-The-Deer-Goddess.png",
+		image: "/images/20-The-Deer-Goddess.webp",
 	},
 	{
 		id: 21,
@@ -190,7 +190,7 @@ export const cards = [
 		description:
 			"The charm of the high position of the defeated is irresistible. The depth of the complaint if well invested is a bigger win.\nThere are battles which are good to lose, saving a more significant evolvement in something which has nothing to do with us directly or indirectly as it is strange territory towards the program of our destiny. These kinds of battles are unrelated to our realization. Their victory brings responsibility in foreign domains.\nWhen we become involved in conflicts or power games just as a reaction to the action, we create unnecessary battles and the winner carries the responsibility of a victory with which they have nothing to do.",
 		reverse: "Indifference to what you already possess.",
-		image: "/images/21-The-Defeated-Victory.png",
+		image: "/images/21-The-Defeated-Victory.webp",
 	},
 	{
 		id: 22,
@@ -200,7 +200,7 @@ export const cards = [
 		description:
 			"When the disobedient Serpent spoke to Eve, they agreed with each other. In the brain of the dark, hidden underworld she became his queen.\nFreeing her from the stagnation of immortality initiated her the repeated resurrection of birth. Every birth is a revolution.\nThe genetic memory contains all the knowledge of the creation of beings. The ova of each nucleus attract forever the rivers that traverse them.\nThis attraction is superior to logic since cause and effect is a space of direct illusion in the Big Spiral.",
 		reverse: "disability",
-		image: "/images/22-The-Serpent-of-Eden.png",
+		image: "/images/22-The-Serpent-of-Eden.webp",
 	},
 	{
 		id: 23,
@@ -210,7 +210,7 @@ export const cards = [
 		description:
 			"In every nucleus of any physical and chemical matter, there is light, heat, and movement. This pulse is life, energy-packed battles, marriages, and states.\nGhosts, dreams, and thoughts take their colors from the inner light of Matter, the infinite crystals that reflect it, and the enclosed light of Diamonite.\nLike a hidden treasure in a cave, infinite energy is waiting to be discovered.",
 		reverse: "coming down back to earth",
-		image: "/images/23-Diamonite.png",
+		image: "/images/23-Diamonite.webp",
 	},
 	{
 		id: 24,
@@ -219,7 +219,7 @@ export const cards = [
 		description:
 			"Left reflects Right and vice versa.\nEvery unit has a twin.\nEvery strength that elevates it corresponds to its ancestors. Its roots, Its descendants, are found in the cycle where the past meets the future. Thus the parents are two, the grandparents four, the great grandparents eight and so on. This is the ancestral pattern of the Tree of Life.\nThe binary forces branch into the Tree of Life in the united time of the Age of the Universe.",
 		reverse: "",
-		image: "/images/24-The-Tree-of-Life.png",
+		image: "/images/24-The-Tree-of-Life.webp",
 	},
 ];
 

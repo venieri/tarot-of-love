@@ -1,12 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { cards } from "../lib/cards.js";
 
-// Mock the config to avoid actual API key usage in tests
-vi.mock("../lib/config.js", () => ({
-	OPENAI_API_KEY: "test-api-key",
-}));
-
-// Import after mocking
 const { TarotGame } = await import("../lib/store.svelte.js");
 
 describe("TarotGame Store", () => {
@@ -165,12 +159,9 @@ describe("TarotGame Store", () => {
 		});
 
 		it("should set loading state during reading generation", async () => {
-			const mockResponse = {
-				choices: [{ message: { content: "Your reading here..." } }],
-			};
-
 			global.fetch.mockResolvedValueOnce({
-				json: async () => mockResponse,
+				ok: true,
+				json: async () => ({ reading: "Your reading here..." }),
 			});
 
 			const readingPromise = game.getReading();
@@ -179,37 +170,30 @@ describe("TarotGame Store", () => {
 			await readingPromise;
 		});
 
-		it("should call OpenAI API with correct parameters", async () => {
-			const mockResponse = {
-				choices: [{ message: { content: "Your reading here..." } }],
-			};
-
+		it("should call reading API with question and cards", async () => {
 			global.fetch.mockResolvedValueOnce({
-				json: async () => mockResponse,
+				ok: true,
+				json: async () => ({ reading: "Your reading here..." }),
 			});
 
 			await game.getReading();
 
 			expect(global.fetch).toHaveBeenCalledWith(
-				"https://api.openai.com/v1/chat/completions",
+				"/api/reading",
 				expect.objectContaining({
 					method: "POST",
-					headers: expect.objectContaining({
-						"Content-Type": "application/json",
-						Authorization: "Bearer test-api-key",
-					}),
+					headers: { "Content-Type": "application/json" },
+					body: expect.stringContaining("Will I find love?"),
 				}),
 			);
 		});
 
 		it("should set reading from API response", async () => {
 			const mockReading = "Your cards reveal a journey of transformation...";
-			const mockResponse = {
-				choices: [{ message: { content: mockReading } }],
-			};
 
 			global.fetch.mockResolvedValueOnce({
-				json: async () => mockResponse,
+				ok: true,
+				json: async () => ({ reading: mockReading }),
 			});
 
 			await game.getReading();

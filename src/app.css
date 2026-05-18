@@ -7,3 +7,74 @@ body {
 	padding: 0;
 	font-family: system-ui, -apple-system, sans-serif;
 }
+
+.reading-markdown {
+	@apply leading-relaxed text-sm md:text-base font-light text-white/90;
+}
+
+.reading-markdown > *:first-child {
+	margin-top: 0;
+}
+
+.reading-markdown > *:last-child {
+	margin-bottom: 0;
+}
+
+.reading-markdown h1,
+.reading-markdown h2,
+.reading-markdown h3 {
+	@apply font-light text-white tracking-wide;
+}
+
+.reading-markdown h1 {
+	@apply text-xl md:text-2xl mt-8 mb-4;
+}
+
+.reading-markdown h2 {
+	@apply text-lg md:text-xl mt-6 mb-3 text-gothic-crimson;
+}
+
+.reading-markdown h3 {
+	@apply text-base md:text-lg mt-5 mb-2 text-white/95;
+}
+
+.reading-markdown p {
+	@apply mb-4;
+}
+
+.reading-markdown strong {
+	@apply font-normal text-white;
+}
+
+.reading-markdown em {
+	@apply italic text-white/80;
+}
+
+.reading-markdown ul,
+.reading-markdown ol {
+	@apply mb-4 pl-5 space-y-2;
+}
+
+.reading-markdown ul {
+	list-style-type: disc;
+}
+
+.reading-markdown ol {
+	list-style-type: decimal;
+}
+
+.reading-markdown li {
+	@apply text-white/85;
+}
+
+.reading-markdown hr {
+	@apply my-8 border-gothic-silver/20;
+}
+
+.reading-markdown a {
+	@apply text-gothic-crimson underline underline-offset-2 hover:text-white transition-colors;
+}
+
+.reading-markdown blockquote {
+	@apply border-l-2 border-gothic-crimson/50 pl-4 my-4 italic text-white/75;
+}

@@ -1,12 +1,15 @@
 import FormData from "form-data";
 import Mailgun from "mailgun.js";
+import { env } from "$env/dynamic/private";
 import { json } from "@sveltejs/kit";
 
-// Disable prerendering for this API endpoint
 export const prerender = false;
 
-const MAILGUN_API_KEY = import.meta.env.VITE_MAILGUN_API_KEY;
 const MAILGUN_DOMAIN = "sandboxe624bd57c16849db930a11823b84f301.mailgun.org";
+
+function getMailgunApiKey() {
+	return env.MAILGUN_API_KEY || env.VITE_MAILGUN_API_KEY;
+}
 
 export async function POST({ request }) {
 	try {
@@ -17,7 +20,8 @@ export async function POST({ request }) {
 			return json({ error: "Missing required fields" }, { status: 400 });
 		}
 
-		if (!MAILGUN_API_KEY) {
+		const mailgunApiKey = getMailgunApiKey();
+		if (!mailgunApiKey) {
 			console.error("Mailgun API key not configured");
 			return json({ error: "Email service not configured" }, { status: 500 });
 		}
@@ -25,7 +29,7 @@ export async function POST({ request }) {
 		const mailgun = new Mailgun(FormData);
 		const mg = mailgun.client({
 			username: "api",
-			key: MAILGUN_API_KEY,
+			key: mailgunApiKey,
 		});
 
 		// Format the email content

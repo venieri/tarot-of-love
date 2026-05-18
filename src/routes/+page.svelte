@@ -2,6 +2,7 @@
 import { spreadPositions } from "$lib/cards.js";
 import CardImage from "$lib/components/CardImage.svelte";
 import CardModal from "$lib/components/CardModal.svelte";
+import Markdown from "$lib/components/Markdown.svelte";
 import ReadingHistory from "$lib/components/ReadingHistory.svelte";
 import { game } from "$lib/store.svelte.js";
 
@@ -160,7 +161,7 @@ function closeCardModal() {
                             Selected Cards
                         </p>
                         <div
-                            class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 max-w-4xl mx-auto"
+                            class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 max-w-4xl mx-auto items-start"
                         >
                             {#each game.selectedCards as selected}
                                 <button
@@ -209,7 +210,7 @@ function closeCardModal() {
                     </div>
 
                     <div
-                        class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12"
+                        class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12 items-start"
                     >
                         {#each game.selectedCards as selected}
                             <button
@@ -319,11 +320,7 @@ function closeCardModal() {
                         <div
                             class="border border-gothic-silver/20 p-6 md:p-8 mb-6"
                         >
-                            <p
-                                class="whitespace-pre-wrap leading-relaxed text-sm md:text-base font-light text-white/90"
-                            >
-                                {game.reading}
-                            </p>
+                            <Markdown content={game.reading} />
                         </div>
                         <!-- <div class="mb-6 text-center">
                             <button
